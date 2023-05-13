@@ -1,0 +1,220 @@
+{% load bootstrap5 %}
+{% load static %}
+{% load thumbnail %}
+<!doctype html>
+<html lang="pt-br" class="h-100">
+  <head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <meta name="description" content="Cajuback - O cashback do Nordeste"/>
+    <meta name="author" content="Jose Mauricio"/>
+    <title>
+      {% block title %}
+        Cajuback - O cashback do Nordeste
+      {% endblock title %}
+    </title>
+    <!-- Bootstrap core CSS -->
+    {% bootstrap_css %}
+    <!-- Fontawesome -->
+    <link href="{% static 'fontawesomefree/css/all.min.css' %}"
+          rel="stylesheet"
+          type="text/css"/>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com"/>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka&display=swap"
+          rel="stylesheet"/>
+    <!-- Favicons -->
+    <link rel="apple-touch-icon"
+          sizes="57x57"
+          href="{% static 'ico/apple-icon-57x57.png' %}"/>
+    <link rel="apple-touch-icon"
+          sizes="60x60"
+          href="{% static 'ico/apple-icon-60x60.png' %}"/>
+    <link rel="apple-touch-icon"
+          sizes="72x72"
+          href="{% static 'ico/apple-icon-72x72.png' %}"/>
+    <link rel="apple-touch-icon"
+          sizes="76x76"
+          href="{% static 'ico/apple-icon-76x76.png' %}"/>
+    <link rel="apple-touch-icon"
+          sizes="114x114"
+          href="{% static 'ico/apple-icon-114x114.png' %}"/>
+    <link rel="apple-touch-icon"
+          sizes="120x120"
+          href="{% static 'ico/apple-icon-120x120.png' %}"/>
+    <link rel="apple-touch-icon"
+          sizes="144x144"
+          href="{% static 'ico/apple-icon-144x144.png' %}"/>
+    <link rel="apple-touch-icon"
+          sizes="152x152"
+          href="{% static 'ico/apple-icon-152x152.png' %}"/>
+    <link rel="apple-touch-icon"
+          sizes="180x180"
+          href="{% static 'ico/apple-icon-180x180.png' %}"/>
+    <link rel="icon"
+          type="image/png"
+          sizes="192x192"
+          href="{% static 'ico/android-icon-192x192.png' %}"/>
+    <link rel="icon"
+          type="image/png"
+          sizes="32x32"
+          href="{% static 'ico/favicon-32x32.png' %}"/>
+    <link rel="icon"
+          type="image/png"
+          sizes="96x96"
+          href="{% static 'ico/favicon-96x96.png' %}"/>
+    <link rel="icon"
+          type="image/png"
+          sizes="16x16"
+          href="{% static 'ico/favicon-16x16.png' %}"/>
+    <link rel="manifest" href="{% static 'ico/manifest.json' %}"/>
+    <meta name="msapplication-TileColor" content="#ffffff"/>
+    <meta name="msapplication-TileImage"
+          content="{% static 'ico/ms-icon-144x144.png' %}"/>
+    <meta name="theme-color" content="#ffffff"/>
+    <!-- Custom styles for this template -->
+    <link href="{% static 'css/style.css' %}" rel="stylesheet"/>
+    {% block extra_head %}
+    {% endblock extra_head %}
+  </head>
+  <body class="d-flex flex-column h-100">
+    <header>
+      <!-- Fixed navbar -->
+      <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+        <div class="container">
+          <a class="navbar-brand" href="{% url 'index' %}">
+            <img src="{% static 'img/logo.png' %}"
+                 alt=""
+                 width="40"
+                 height="40"
+                 class=""/>
+          </a>
+          <button class="navbar-toggler"
+                  type="button"
+                  data-bs-toggle="collapse"
+                  data-bs-target="#navbarCollapse"
+                  aria-controls="navbarCollapse"
+                  aria-expanded="false"
+                  aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav me-auto mb-2 mb-md-0">
+              <li class="nav-item">
+                <a class="nav-link fw-bolder" href="#"><i class="fa-solid fa-coins me-2"></i>Usar Pontos</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link fw-bolder" href="#"><i class="fa-solid fa-piggy-bank me-2"></i>Juntar Pontos</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link fw-bolder" href="{% url 'about' %}"><i class="fa-solid fa-person-circle-question me-2"></i>Conheça o Cajuback</a>
+              </li>
+            </ul>
+            {% if user.is_authenticated %}
+              <div class="dropdown">
+                <a href="#"
+                   class="d-block link-light text-decoration-none dropdown-toggle"
+                   id="dropdownUser1"
+                   data-bs-toggle="dropdown"
+                   aria-expanded="false">
+                    {% thumbnail user.profile.avatar "40x40" crop="center" as im %}
+                      <img src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}" alt="mdo" class="rounded-circle" />
+                    {% empty %}
+                      <img src="{% static 'img/user.png' %}" width="40" height="40" alt="mdo" class="rounded-circle" />
+                    {% endthumbnail %}
+                </a>
+                <ul class="dropdown-menu dropdown-menu-end"
+                    aria-labelledby="dropdownMenuButton1">
+                  <li class="p-2">
+                    <div class="d-flex flex-column align-items-end p-3 bg-light rounded-3 dropdown-item">
+                      <p>{{ user.email }}</p>
+                      <p class="text-end">
+                        Pts: <span class="fw-bolder">{{ user.profile.points }}</span>
+                      </p>
+                    </div>
+                  </li>
+                  <li>
+                    <hr class="dropdown-divider"/>
+                  </li>
+                  <li>
+                    <a class="dropdown-item" href="{% url 'profile' %}"> <i class="fa-solid fa-user me-2"></i>Perfil</a>
+                  </li>
+                  <li>
+                    <a class="dropdown-item" href="#"><i class="fa-solid fa-gear  me-2"></i>Configurações</a>
+                  </li>
+                  {% if user.is_staff %}
+                  <li>
+                    <a class="dropdown-item" href="{% url 'admin:index' %}"><i class="fa-solid fa-lock me-2"></i>Admin</a>
+                  </li>
+                  {% endif %}
+                  <li>
+                    <hr class="dropdown-divider"/>
+                  </li>
+                  <li>
+                    <a class="dropdown-item"
+                       href="#"
+                       data-bs-toggle="modal"
+                       data-bs-target="#exampleModal"><i class="fa-solid fa-right-from-bracket  me-2"></i> Sair</a>
+                  </li>
+                </ul>
+              </div>
+            {% else %}
+              <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                <a class="btn btn-outline-light me-2"
+                   href="{% url 'login' %}"
+                   role="button">Login</a>
+                <a class="btn btn-warning me-2"
+                   href="{% url 'registration' %}"
+                   role="button">Registrar</a>
+              </div>
+            {% endif %}
+          </div>
+        </div>
+      </nav>
+    </header>
+    {% include "registration/snippets/logout_modal.html" %}
+    <!-- Begin page content -->
+    <main class="flex-shrink-0">
+      <div class="container">
+        <div class="msg">
+          <div class="mh-100">{% bootstrap_messages %}</div>
+        </div>
+        {% block content %}
+        {% endblock content %}
+      </div>
+      {% comment %} <footer class="footer mt-auto py-4 bg-light navbar-fixed-bottom">
+        <div class="container">
+          <p class="float-end">
+            <a href="#"><i class="fa-solid fa-square-caret-up"></i></a>
+          </p>
+          <span class="text-muted">Place sticky footer content here.</span>
+        </div>
+      </footer> {% endcomment %}
+      <div class="container">
+        <footer class="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top">
+          <div class="col-md-4 d-flex align-items-center">
+            <a href="{% url 'index' %}" class="mb-3 me-2 mb-md-0 text-muted text-decoration-none lh-1">
+                <img src="{% static 'img/logo.png' %}"
+                     alt=""
+                     width="40"
+                     height="40"
+                     class=""/>
+            </a>
+            <span class="mb-3 mb-md-0 text-muted">&copy; 2022 Cajuback</span>
+          </div>
+
+          <ul class="nav col-md-4 justify-content-end list-unstyled d-flex">
+            <li class="ms-3"><a class="text-muted" href="#"><i class="fa-brands fa-square-facebook fs-2"></i></a></li>
+            <li class="ms-3"><a class="text-muted" href="#"><i class="fa-brands fa-square-instagram fs-2"></i></a></li>
+            <li class="ms-3"><a class="text-muted" href="#"><i class="fa-brands fa-square-twitter fs-2"></i></a></li>
+          </ul>
+        </footer>
+      </div>
+    </main>
+
+    {% block extra_body %}
+    {% endblock extra_body %}
+    {% bootstrap_javascript %}
+  </body>
+</html>

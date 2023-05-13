@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+{% load bootstrap5 %}
+{% load static %}
+{% load thumbnail %}
+{% block title %}
+    Editar Perfil - {{ user.email }}
+{% endblock title %}
+{% block content %}
+<form id="profile-form" method="post" action="{% url 'edit_profile' %}" enctype="multipart/form-data">
+    {% csrf_token %}
+    <section>
+        <div class="container mb-3">
+            <div class="row">
+                <div class="col-lg-4">
+                    <div class="card mb-4">
+                        <div class="card-body text-center">
+                            {% thumbnail user.profile.avatar "150x150" crop="center" as im %}
+                                <img src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}" alt="avatar" class="rounded-circle img-fluid" />
+                            {% empty %}
+                                <img src="{% static 'img/user.png' %}" width="150" height="150" alt="avatar" class="rounded-circle img-fluid" />
+                            {% endthumbnail %}
+                            <h5 class="my-3">{{ user.profile.name }}</h5>
+                            <h5 class="my-3 ">{{ user.email }}</h5>
+                            <div class="d-flex align-justify-start mb-2">
+                                {% bootstrap_field form.avatar placeholder='' show_label=False %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-8">
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            {% bootstrap_form_errors form type='non_fields' %}
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <p class="mb-0">Nome</p>
+                                </div>
+                                <div class="col-sm-9">
+                                    {% bootstrap_field form.name placeholder='' show_label=False %}
+                                </div>
+                            </div>
+                            <hr/>
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <p class="mb-0">Telefone</p>
+                                </div>
+                                <div class="col-sm-9">
+                                    {% bootstrap_field form.phone placeholder='' show_label=False %}
+                                </div>
+                            </div>
+                            <hr/>
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <p class="mb-0">Celular</p>
+                                </div>
+                                <div class="col-sm-9">
+                                    {% bootstrap_field form.mobile placeholder='' show_label=False %}
+                                </div>
+                            </div>
+                            <hr/>
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <p class="mb-0">Endereço</p>
+                                </div>
+                                <div class="col-sm-9">
+                                    {% bootstrap_field form.address placeholder='' show_label=False %}
+                                </div>
+                            </div>
+                            <hr/>
+                            <div class="row">
+                                <div class="col">
+                                    <div class="d-flex justify-content-end mt-3 ">
+                                        {% buttons %}
+                                            <button type="submit" class="btn btn-primary">
+                                                <i class="fa-solid fa-floppy-disk me-1"></i> Salvar
+                                            </button>
+                                        {% endbuttons %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</form>
+{% endblock content %}
