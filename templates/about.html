@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% load bootstrap5 %}
+{% load static %}
+{% load thumbnail %}
+{% block title %}
+Sobre Nós - VCAR
+{% endblock title %}
+{% block content %}
+<div class="container px-4">
+    <h2 class="pb-2 border-bottom"><i class="fa-solid fa-person-circle-question me-2"></i>Sobre Nós</h2>
+    <div class="container col-xxl-8">
+        <div class="row flex-lg-row-reverse align-items-center g-5 py-5">
+          <div class="col-10 col-sm-8 col-lg-6">
+            <img src="{% static 'img/logo.png' %}" width="700" height="700" alt="aboutus" class="d-block mx-lg-auto img-fluid" loading="lazy"/>
+          </div>
+          <div class="col-lg-6">
+            <h1 class="display-5 fw-bold lh-1 mb-5">VCAR no Piauí!</h1>
+            <p class="lead">A locadora de carros VCAR oferece uma variedade de veículos para locação na cidade de Teresina, no Piauí. Com uma ampla frota de carros novos e bem cuidados, a empresa oferece opções para atender diferentes necessidades e preferências dos clientes, desde carros populares até modelos mais luxuosos. Além disso, a VCAR tem um atendimento personalizado, com uma equipe de profissionais capacitados e preços competitivos no mercado de locação de veículos.</p>
+            <div class="d-grid gap-2 d-md-flex justify-content-center mt-5">
+              <button type="button" class="btn btn-primary btn-lg px-4 me-md-2">Faça seu cadastro!</button>
+            </div>
+          </div>
+        </div>
+      </div>
+</div>
+{% endblock content %}

@@ -56,11 +56,13 @@ THIRD_PARTY_APPS = [
     # "corsheaders",
     # "drf_spectacular",
     "sorl.thumbnail",
+    "anymail",
 ]
 
 LOCAL_APPS = [
     # Your stuff: custom apps go here
     "core",
+    "aluguel",
     # "apps.partners",
 
 ]
@@ -190,7 +192,20 @@ CACHES = {
 # EMAIL
 # ------------------------------------------------------------------------------
 # https://docs.djangoproject.com/en/dev/ref/settings/#email-backend
-EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+# EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+
+ANYMAIL = {
+    # (exact settings here depend on your ESP...)
+    "MAILJET_API_KEY": "7dfbcdaac00d23b5cfc149f96a796dde",
+    "MAILJET_SECRET_KEY": "ec739e69df5399dd0f70fa008bc8e442",
+}
+# or sendgrid.EmailBackend, or...
+EMAIL_BACKEND = "anymail.backends.mailjet.EmailBackend"
+# if you don't already have this in settings
+DEFAULT_FROM_EMAIL = "noreplay@vcar.site"
+# ditto (default from-email for Django errors)
+SERVER_EMAIL = "noreplayr@vcar.site"
 
 
 # WhiteNoise
@@ -204,3 +219,13 @@ STORAGES = {
         "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
     },
 }
+
+
+# SMS api
+
+# TELESIGN_COSTUMER_ID = '57ABDDA1-841F-4A69-990B-07AD33926CA5'
+# TELESIGN_KEY = 'xJe3RWgiGnPmJrm+Zzcu/IzZMzsw86IoHMEsEIDpuWVPfoaPE3o7HYDxLRsQZkEHuo4geuI8r9OAhsKAUL5r8g=='
+SMS_BACKEND = 'sms.backends.twilio.SmsBackend'
+TWILIO_ACCOUNT_SID = 'ACd1425928f0c6952b50ce56190358b8ab'
+TWILIO_AUTH_TOKEN = '6572ae4e4e297dc2b68f2b58fc610045'
+DEFAULT_FROM_SMS = '+12543213987'

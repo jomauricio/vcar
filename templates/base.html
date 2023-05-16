@@ -102,13 +102,13 @@
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav me-auto mb-2 mb-md-0">
               <li class="nav-item">
-                <a class="nav-link fw-bolder" href="#"><i class="fa-solid fa-coins me-2"></i>Usar Pontos</a>
+                <a class="nav-link fw-bolder" href="#"><i class="fa-solid fa-car me-2"></i>Nossa frota</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link fw-bolder" href="#"><i class="fa-solid fa-piggy-bank me-2"></i>Juntar Pontos</a>
+                <a class="nav-link fw-bolder" href="#"><i class="fa-solid fa-clipboard-list me-2"></i>Meus alugueis</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link fw-bolder" href="{% url 'about' %}"><i class="fa-solid fa-person-circle-question me-2"></i>Conheça o Cajuback</a>
+                <a class="nav-link fw-bolder" href="{% url 'about' %}"><i class="fa-solid fa-person-circle-question me-2"></i>Conheça a VCAR</a>
               </li>
             </ul>
             {% if user.is_authenticated %}
@@ -127,11 +127,9 @@
                 <ul class="dropdown-menu dropdown-menu-end"
                     aria-labelledby="dropdownMenuButton1">
                   <li class="p-2">
-                    <div class="d-flex flex-column align-items-end p-3 bg-light rounded-3 dropdown-item">
+                    <div class="d-flex flex-column align-items-start p-3 bg-light rounded-3 dropdown-item">
+                      <p>{{ user.profile.name }}</p>
                       <p>{{ user.email }}</p>
-                      <p class="text-end">
-                        Pts: <span class="fw-bolder">{{ user.profile.points }}</span>
-                      </p>
                     </div>
                   </li>
                   <li>
@@ -141,7 +139,7 @@
                     <a class="dropdown-item" href="{% url 'profile' %}"> <i class="fa-solid fa-user me-2"></i>Perfil</a>
                   </li>
                   <li>
-                    <a class="dropdown-item" href="#"><i class="fa-solid fa-gear  me-2"></i>Configurações</a>
+                    <a class="dropdown-item" href="{% url 'settings' %}"><i class="fa-solid fa-gear  me-2"></i>Configurações</a>
                   </li>
                   {% if user.is_staff %}
                   <li>
@@ -183,14 +181,6 @@
         {% block content %}
         {% endblock content %}
       </div>
-      {% comment %} <footer class="footer mt-auto py-4 bg-light navbar-fixed-bottom">
-        <div class="container">
-          <p class="float-end">
-            <a href="#"><i class="fa-solid fa-square-caret-up"></i></a>
-          </p>
-          <span class="text-muted">Place sticky footer content here.</span>
-        </div>
-      </footer> {% endcomment %}
       <div class="container">
         <footer class="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top">
           <div class="col-md-4 d-flex align-items-center">

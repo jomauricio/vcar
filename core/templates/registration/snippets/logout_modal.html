@@ -8,7 +8,7 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">{% trans "Sign Out" %}</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Sair</h5>
                 <button type="button"
                         class="btn-close"
                         data-bs-dismiss="modal"
@@ -16,7 +16,7 @@
             </div>
             <form method="post" action="{% url 'logout' %}">
                 <div class="modal-body">
-                    <p>{% trans 'Are you sure you want to sign out?' %}</p>
+                    <p>Você tem certeza que quer sair?</p>
                     {% csrf_token %}
                     {% if redirect_field_value %}
                         <input type="hidden"
@@ -26,7 +26,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="submit" class="btn btn-danger">{% trans 'Sign Out' %}</button>
+                    <button type="submit" class="btn btn-danger">Sair</button>
                 </div>
             </form>
         </div>
