@@ -20,7 +20,7 @@ class IndexView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["carros"] = Car.objects.all()[:3]
+        context["carros"] = Car.objects.filter(rented=False)[:3]
         return context
 
 

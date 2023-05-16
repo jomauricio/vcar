@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% load thumbnail %}
+{% load bootstrap5 %}
+{% load static %}
+{% block content %}
+    <section class="text-center container">
+        <h2 class="pb-2 border-bottom">
+            <i class="fa-solid fa-clipboard-list me-2"></i>Meus alugueis
+        </h2>
+        <ul class="list-group list-group-flush">
+            {% for aluguel in alugueis %}
+                <li class="list-group-item">Aluguel codigo: {{ aluguel.rental_number }}</li>
+            {% endfor %}
+        </ul>
+    </section>
+    <!-- /.container -->
+{% endblock content %}

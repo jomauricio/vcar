@@ -13,3 +13,4 @@ class RentForm(ModelForm):
     class Meta:
         model = Rent
         fields = "__all__"
+        exclude = ("user",)

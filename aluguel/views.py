@@ -1,7 +1,10 @@
-# from django.shortcuts import render
-from django.views.generic import (CreateView, DetailView, ListView,
-                                  TemplateView, UpdateView)
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import get_object_or_404, redirect, render
+from django.urls import reverse_lazy
+# from django.utils import timezone
+from django.views.generic import DetailView, ListView
 
+from .forms import RentForm
 from .models import Car, Rent
 
 # Create your views here.
@@ -11,6 +14,7 @@ class CarDetailView(DetailView):
     model = Car
     template_name = "car/detail_car.html"
     context_object_name = "carro"
+    queryset = Car.objects.filter(rented=False)
 
 
 class CarListView(ListView):
@@ -19,25 +23,25 @@ class CarListView(ListView):
     context_object_name = "carros"
 
 
-# class ProfileUpdateView(LoginRequiredAndIsOwnerMixin, UpdateView):
-#     model = Profile
-#     form_class = ProfileForm
-#     template_name = "profile/edit_profile.html"
-#     success_url = reverse_lazy("profile")
+class RentListView(ListView):
+    model = Rent
+    template_name = "rent/list_rents.html"
+    context_object_name = "alugueis"
 
-#     def get_object(self):
-#         return get_object_or_404(Profile, pk=self.request.user.profile.pk)
+    def get_queryset(self):
+        return Rent.objects.filter(user=self.request.user,)
 
 
-# class SettingsView(TemplateView):
-#     template_name = "profile/settings.html"
+@login_required
+def rent_car(request, car_id):
+    car = get_object_or_404(Car, pk=car_id)
+    if request.method == 'POST':
+        form = RentForm(request.POST)
 
-#     def get_context_data(self, **kwargs):
-#         context = super().get_context_data(**kwargs)
+        if form.is_valid():
+            rent = form.save()
+            return redirect(reverse_lazy("list_rents"))
 
-#         phone_number = "+5586981103337"
-#         message = "Você acessou suas configurações as {}.".format(
-#             timezone.now())
-
-#         send_sms(message, None, [phone_number], fail_silently=False)
-#         return context
+    else:
+        form = RentForm()
+    return render(request, 'rent/create_rent.html', {'form': form, 'carro': car})

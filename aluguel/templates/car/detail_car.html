@@ -27,7 +27,7 @@
                   <div class="row">
                     <div class="col">
                         <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                        <a href="#" class="btn btn-primary">Alugar!</a>
+                        <a href="{% url 'rent_car' carro.pk %}" class="btn btn-primary">Alugar!</a>
                     </div>
                     <div class="col">
                         <ul class="list-group list-group-flush">
@@ -37,11 +37,6 @@
                         </ul>
                     </div>
                 </div>
-                {% if not carro.rented %}
-                  <p class="card-text"><small class="text-muted">Disponivel para alugar</small></p>
-                {% else %}
-                <p class="card-text"><small class="text-muted">Indisponivel</small></p>
-                {% endif %}
                 </div>
               </div>
             </div>
