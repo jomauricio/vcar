@@ -1,4 +1,3 @@
-from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
@@ -7,11 +6,22 @@ from django.views.generic import (CreateView, DetailView, TemplateView,
                                   UpdateView)
 from sms import send_sms
 
+from aluguel.models import Car
+
 from .forms import ProfileForm, UserRegistrationForm
 from .mixins import LoginRequiredAndIsOwnerMixin
 from .models import Profile
 
 User = get_user_model()
+
+
+class IndexView(TemplateView):
+    template_name = "index.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["carros"] = Car.objects.all()[:3]
+        return context
 
 
 class ProfileDetailView(LoginRequiredAndIsOwnerMixin, DetailView):

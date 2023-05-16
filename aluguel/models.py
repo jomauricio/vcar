@@ -15,7 +15,7 @@ class Car(TimeStampedModel):
     brand = models.CharField("Marca", max_length=50)
     model = models.CharField("Modelo", max_length=50)
     year = models.CharField("Ano", max_length=4)
-    rented = models.BooleanField("Alugado")
+    rented = models.BooleanField("Alugado", default=False)
     image = ImageField(
         blank=True,
         upload_to="cars",
@@ -43,6 +43,7 @@ class Rent(TimeStampedModel):
         "Codigo", length=6, lowercase=True,  unique=True)
     car = models.ForeignKey(Car, on_delete=models.CASCADE,
                             verbose_name="Carro", related_name="car_rents")
+    rent_amount = models.DecimalField("Valor", max_digits=6, decimal_places=2)
     rent_date = models.DateField("Data de aluguel")
     return_date = models.DateField(
         "Data de devolução", null=True, blank=True)

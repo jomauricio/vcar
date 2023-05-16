@@ -1,11 +1,11 @@
 from django.urls import path
 from django.views.generic import TemplateView
 
-from .views import (ProfileDetailView, ProfileUpdateView, Registration,
-                    SettingsView)
+from .views import (IndexView, ProfileDetailView, ProfileUpdateView,
+                    Registration, SettingsView)
 
 urlpatterns = [
-    path("", TemplateView.as_view(template_name="index.html"), name="index"),
+    path("", IndexView.as_view(), name="index"),
     path("sobrenos/", TemplateView.as_view(template_name="about.html"), name="about"),
     path("profile/", ProfileDetailView.as_view(), name="profile"),
     path("profile/edit/", ProfileUpdateView.as_view(), name="edit_profile"),

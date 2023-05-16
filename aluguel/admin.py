@@ -6,7 +6,7 @@ from .models import Car, Rent
 
 @admin.register(Car)
 class CarAdmin(AdminImageMixin, admin.ModelAdmin):
-    list_display = ("plate", "model", "brand", "year")
+    list_display = ("plate", "model", "brand", "year", "image")
     list_filter = ("year",)
     search_fields = ("plate", "model",)
     readonly_fields = ["width_image", "height_image", "rented"]

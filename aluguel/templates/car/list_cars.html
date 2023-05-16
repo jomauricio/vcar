@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% load thumbnail %}
+{% load bootstrap5 %}
+{% load static %}
+{% block content %}
+    <section class="text-center container">
+        <h2 class="pb-2 border-bottom">
+            <i class="fa-solid fa-car me-2"></i>Nossa frota
+        </h2>
+        <div class="row row-cols-1 row-cols-md-3 g-4 mt-3">
+        {% for carro in carros %}
+          <div class="col">
+            <div class="card h-100">
+                {% thumbnail carro.image "x200" crop="center" as im %}
+                    <img src="{{ im.url }}"
+                            width="{{ im.width }}"
+                            height="{{ im.height }}"
+                            alt="carro"
+                            class="card-img-top" />
+                {% empty %}
+                    <img src="{% static 'img/carro.jpg' %}"
+                            width="200"
+                            height="200"
+                            alt="carro"
+                            class="card-img-top" />
+                {% endthumbnail %}
+                <div class="card-body">
+                    <h5 class="card-title mb-3">{{ carro.brand }} - {{ carro.model }} - {{ carro.year }}</h5>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">Marca: {{ carro.brand }}</li>
+                        <li class="list-group-item">Modelo: {{ carro.model }}</li>
+                        <li class="list-group-item">Ano: {{ carro.year }}</li>
+                    </ul>
+                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                    <a href="{% url 'detail_car' carro.pk %}" class="btn btn-primary">Alugar!</a>
+                </div>
+            </div>
+          </div>
+        {% endfor %}
+        </div>
+    </section>
+    <!-- /.container -->
+{% endblock content %}
