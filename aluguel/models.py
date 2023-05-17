@@ -15,6 +15,8 @@ class Car(TimeStampedModel):
     brand = models.CharField("Marca", max_length=50)
     model = models.CharField("Modelo", max_length=50)
     year = models.CharField("Ano", max_length=4)
+    rent_amount = models.DecimalField(
+        "Diária", max_digits=6, decimal_places=2, blank=True, null=True)
     rented = models.BooleanField("Alugado", default=False)
     image = ImageField(
         blank=True,
@@ -43,7 +45,6 @@ class Rent(TimeStampedModel):
         "Codigo", length=6, lowercase=True,  unique=True)
     car = models.ForeignKey(Car, on_delete=models.CASCADE,
                             verbose_name="Carro", related_name="car_rents")
-    rent_amount = models.DecimalField("Valor", max_digits=6, decimal_places=2)
     rent_date = models.DateField("Data de aluguel")
     return_date = models.DateField(
         "Data de devolução", null=True, blank=True)
@@ -58,6 +59,13 @@ class Rent(TimeStampedModel):
 
     def get_absolute_url(self):
         return reverse_lazy("rent", rental_number=self.rental_number)
+
+    def total_rent(self):
+        if self.car.rent_amount:
+            hour = 1
+            return hour*self.car.rent_amount
+        else:
+            return 0.0
 
     class Meta:
         verbose_name = "Aluguel"

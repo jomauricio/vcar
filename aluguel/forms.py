@@ -1,4 +1,4 @@
-from django.forms import ModelForm
+from django.forms import DateInput, ModelForm
 
 from .models import Car, Rent
 
@@ -13,4 +13,10 @@ class RentForm(ModelForm):
     class Meta:
         model = Rent
         fields = "__all__"
-        exclude = ("user",)
+        exclude = ("user", "car", "return_date")
+        widgets = {
+            'rent_date': DateInput(
+                attrs={
+                    'type': 'date', 'placeholder': 'dd/mm/YYYY'}
+            )
+        }

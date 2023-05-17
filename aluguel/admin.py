@@ -6,15 +6,15 @@ from .models import Car, Rent
 
 @admin.register(Car)
 class CarAdmin(AdminImageMixin, admin.ModelAdmin):
-    list_display = ("plate", "model", "brand", "year", "image")
+    list_display = ("plate", "model", "brand", "year", "rented", "image")
     list_filter = ("year",)
     search_fields = ("plate", "model",)
-    readonly_fields = ["width_image", "height_image", "rented"]
+    readonly_fields = ["width_image", "height_image"]
 
 
 @admin.register(Rent)
 class RentAdmin(admin.ModelAdmin):
-    list_display = ("rental_number", "user",)
+    list_display = ("rental_number", "user", "car")
     list_filter = ("rent_date", "return_date", "user",)
     search_fields = ("rental_number", "user",)
     autocomplete_fields = ["car", "user"]
