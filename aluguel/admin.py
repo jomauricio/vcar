@@ -4,12 +4,18 @@ from sorl.thumbnail.admin import AdminImageMixin
 from .models import Car, Rent
 
 
+@admin.action(description="Liberar carros para aluguel")
+def make_published(modeladmin, request, queryset):
+    queryset.update(rented=False)
+
+
 @admin.register(Car)
 class CarAdmin(AdminImageMixin, admin.ModelAdmin):
     list_display = ("plate", "model", "brand", "year", "rented", "image")
     list_filter = ("year",)
     search_fields = ("plate", "model",)
     readonly_fields = ["width_image", "height_image"]
+    actions = [make_published]
 
 
 @admin.register(Rent)

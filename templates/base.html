@@ -6,11 +6,11 @@
   <head>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
-    <meta name="description" content="Cajuback - O cashback do Nordeste"/>
+    <meta name="description" content="VCAR - Locadora do carros do Piauí"/>
     <meta name="author" content="Jose Mauricio"/>
     <title>
       {% block title %}
-        Cajuback - O cashback do Nordeste
+      VCAR - Locadora do carros do Piauí
       {% endblock title %}
     </title>
     <!-- Bootstrap core CSS -->
@@ -107,6 +107,11 @@
               {% if user.is_authenticated %}
               <li class="nav-item">
                 <a class="nav-link fw-bolder" href="{% url 'list_rents' %}"><i class="fa-solid fa-clipboard-list me-2"></i>Meus alugueis</a>
+              </li>
+              {% endif %}
+              {% if 'aluguel' in perms %}
+              <li class="nav-item">
+                <a class="nav-link fw-bolder" href="{% url 'attendant_list_rents' %}"><i class="fa-solid fa-check-to-slot me-2"></i>Alugueis Ativos</a>
               </li>
               {% endif %}
               <li class="nav-item">

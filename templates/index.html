@@ -22,7 +22,9 @@
     </section>
     <div class="container marketing">
         <hr class="featurette-divider" />
-        <!-- Three columns of text below the carousel -->
+        <h2 class="pb-2 border-bottom text-center">
+            <i class="fa-solid fa-car me-2"></i>Nossa frota
+        </h2>
         <div class="row">
             {% for carro in carros %}
                 <div class="col-lg-4">
@@ -42,12 +44,12 @@
                     {% endthumbnail %}
                     <div class="card-body">
                         <h5 class="card-title mb-3">Nome do carro</h5>
-                        <ul class="list-group list-group-flush">
+                        <ul class="list-group list-group-flus mb-3">
+                            <li class="list-group-item">Placa: {{ carro.plate|upper }}</li>
                             <li class="list-group-item">Marca: {{ carro.brand }}</li>
                             <li class="list-group-item">Modelo: {{ carro.model }}</li>
                             <li class="list-group-item">Ano: {{ carro.year }}</li>
                         </ul>
-                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
                         <a href="{% url 'rent_car' carro.pk %}" class="btn btn-primary">Alugar!</a>
                     </div>
                 </div>

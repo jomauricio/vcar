@@ -1,3 +1,5 @@
+from datetime import date
+
 from django.contrib.auth import get_user_model
 from django.db import models
 from django.urls import reverse_lazy
@@ -29,7 +31,7 @@ class Car(TimeStampedModel):
     height_image = models.PositiveIntegerField(null=True, blank=True)
 
     def __str__(self):
-        return "{} - {} - {}".format(self.plate, self.model, self.brand)
+        return "{} - {} - {}".format(self.plate.upper(), self.model, self.brand)
 
     def get_absolute_url(self):
         return reverse_lazy("cars", plate=self.plate)
@@ -42,10 +44,11 @@ class Car(TimeStampedModel):
 class Rent(TimeStampedModel):
 
     rental_number = RandomCharField(
-        "Codigo", length=6, lowercase=True,  unique=True)
+        "Codigo", length=6, lowercase=False, uppercase=True, unique=True)
     car = models.ForeignKey(Car, on_delete=models.CASCADE,
                             verbose_name="Carro", related_name="car_rents")
-    rent_date = models.DateField("Data de aluguel")
+    rent_date = models.DateField(
+        "Data de aluguel")
     return_date = models.DateField(
         "Data de devolução", null=True, blank=True)
     user = models.ForeignKey(
@@ -62,10 +65,17 @@ class Rent(TimeStampedModel):
 
     def total_rent(self):
         if self.car.rent_amount:
-            hour = 1
-            return hour*self.car.rent_amount
+            return self.total_days()*self.car.rent_amount
         else:
-            return 0.0
+            return "Não foi possivel calcular"
+
+    def total_days(self):
+        if self.return_date:
+            total = self.return_date - self.rent_date
+            return total.days + 1
+        else:
+            total = date.today() - self.rent_date
+            return total.days + 1
 
     class Meta:
         verbose_name = "Aluguel"

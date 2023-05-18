@@ -5,12 +5,12 @@
 {% block content %}
     <section class="text-center container">
         <h2 class="pb-2 border-bottom mb-3">
-            <i class="fa-solid fa-clipboard-list me-2"></i>Meus alugueis
+            <i class="fa-solid fa-check-to-slot me-2"></i> Alugueis Ativos
         </h2>
         <ul class="list-group list-group-flush">
             {% for aluguel in alugueis %}
-            <a href="#" class="list-group-item list-group-item-action">
-                <div class="card {% if aluguel.return_date %}border-info bg-info{% endif %}">
+            <a href="{% url 'rent_recive_car' aluguel.rental_number %}" class="list-group-item list-group-item-action">
+                <div class="card">
                     <div class="row g-0">
                       <div class="col-md-4">
                         {% thumbnail aluguel.car.image "x200" crop="center" as im %}
@@ -39,7 +39,7 @@
                         </div>
                         <div class="row">
                           <div class="col">
-                            <ul class="list-group">
+                            <ul class="list-group list-group-flush">
                               <li class="list-group-item">Marca: {{ aluguel.car.brand }}</li>
                               <li class="list-group-item">Modelo: {{ aluguel.car.model }}</li>
                               <li class="list-group-item">Ano: {{ aluguel.car.year }}</li>
@@ -47,15 +47,11 @@
                           </div>
                           <div class="col">
                             <div class="col text-center">
-                              {% if not aluguel.return_date %}
-                              <h3 class="card-title mb-3">Devolvendo hoje: <span class="badge bg-success rounded-pill">R$ {{ aluguel.total_rent }}</span></h3>
-                              {% else %}
-                              <ul class="list-group">
-                                <li class="list-group-item">Data devolução: <span class="badge bg-info">{{ aluguel.return_date }}</span></li>
-                                <li class="list-group-item">Quantidade dias: <span class="badge bg-info rounded-pill"> {{ aluguel.total_days }} Dias</span></li>
-                                <li class="list-group-item">Total pago: <span class="badge bg-info rounded-pill">R$ {{ aluguel.total_rent }}</span></li>
+                              <ul class="list-group list-group-flush">
+                                <li class="list-group-item">Cliente: {{ aluguel.user }}</li>
+                                <li class="list-group-item">Data de aluguel: {{ aluguel.rent_date }}</li>
+                                <li class="list-group-item">Se entregar hoje: <span class="badge bg-success rounded-pill">R$ {{ aluguel.total_rent }}</li>
                               </ul>
-                              {% endif %}
                             </div>
                           </div>
                         </div>
@@ -66,7 +62,7 @@
             </a>
             {% empty %}
             <div class="d-flex align-items-center justify-content-center">
-              <h2 >
+              <h2>
                 <i class="fa-solid fa-truck-container-empty me-2"></i>Não há alugueis ativos.
               </h2>
             </div>
