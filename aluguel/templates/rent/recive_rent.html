@@ -46,20 +46,6 @@
       </div>
     </div>
   </div>
-  <div class="w-50 mx-auto">
-    <form method="post">
-      <div class="row d-flex align-items-end">
-        <div class="col">
-          {% csrf_token %}
-          {% bootstrap_form form %}
-        </div>
-        <div class="col">
-          {% buttons %}
-          <button type="submit" class="btn btn-success">Devolver</button>
-        {% endbuttons %}
-      </div>
-    </div>
-  </form>
-</div>
+  <a href="#" class="btn btn-primary">Devolver!</a>
 </section>
 {% endblock content %}

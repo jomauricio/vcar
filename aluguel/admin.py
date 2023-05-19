@@ -20,7 +20,7 @@ class CarAdmin(AdminImageMixin, admin.ModelAdmin):
 
 @admin.register(Rent)
 class RentAdmin(admin.ModelAdmin):
-    list_display = ("rental_number", "user", "car")
-    list_filter = ("rent_date", "return_date", "user",)
+    list_display = ("rental_number", "user", "car", "concluded",)
+    list_filter = ("rent_date", "return_date", "user", "concluded",)
     search_fields = ("rental_number", "user",)
     autocomplete_fields = ["car", "user"]

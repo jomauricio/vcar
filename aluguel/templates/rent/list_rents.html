@@ -10,7 +10,7 @@
         <ul class="list-group list-group-flush">
             {% for aluguel in alugueis %}
             <a href="#" class="list-group-item list-group-item-action">
-                <div class="card {% if aluguel.return_date %}border-info bg-info{% endif %}">
+                <div class="card {% if aluguel.concluded %}border-info bg-info{% endif %}">
                     <div class="row g-0">
                       <div class="col-md-4">
                         {% thumbnail aluguel.car.image "x200" crop="center" as im %}
@@ -47,7 +47,7 @@
                           </div>
                           <div class="col">
                             <div class="col text-center">
-                              {% if not aluguel.return_date %}
+                              {% if not aluguel.concluded %}
                               <h3 class="card-title mb-3">Devolvendo hoje: <span class="badge bg-success rounded-pill">R$ {{ aluguel.total_rent }}</span></h3>
                               {% else %}
                               <ul class="list-group">

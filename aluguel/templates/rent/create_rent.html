@@ -5,7 +5,7 @@
 {% block content %}
   <section class="container text-center">
     <h2 class="pb-2 border-bottom mb-3">
-      <i class="fa-solid fa-clipboard-list me-2"></i>Aluguar: {{ carro }}
+      <i class="fa-solid fa-clipboard-list me-2"></i>Alugar: {{ carro }}
     </h2>
     <div class="card mb-3">
       <div class="row g-0">
@@ -26,7 +26,6 @@
       </div>
       <div class="col-md-8">
         <div class="card-body">
-          <h5 class="card-title mb-3"><span class="badge bg-secondary">Placa: {{ carro }}</span></h5>
           <div class="row">
             <div class="col">
               <p class="card-text">Valor da diária:</p>
@@ -36,6 +35,7 @@
             </div>
             <div class="col">
               <ul class="list-group list-group-flush">
+                <li class="list-group-item"><span class="badge bg-secondary">Placa: {{ carro.plate|upper }}</span></li>
                 <li class="list-group-item">Marca: {{ carro.brand }}</li>
                 <li class="list-group-item">Modelo: {{ carro.model }}</li>
                 <li class="list-group-item">Ano: {{ carro.year }}</li>

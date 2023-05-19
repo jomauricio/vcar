@@ -1,9 +1,10 @@
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib.auth.mixins import (LoginRequiredMixin,
                                         PermissionRequiredMixin)
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
-# from django.utils import timezone
+from django.utils import timezone
 from django.views.generic import DetailView, ListView
 
 from .forms import AttendantRentForm, RentForm
@@ -16,6 +17,12 @@ class CarDetailView(DetailView):
     model = Car
     template_name = "car/detail_car.html"
     context_object_name = "carro"
+
+
+class RentDetailView(DetailView):
+    model = Rent
+    template_name = "rent/attendant_list_rents.html"
+    context_object_name = "aluguel"
 
 
 class CarListView(ListView):
@@ -31,7 +38,7 @@ class RentListView(LoginRequiredMixin, ListView):
     context_object_name = "alugueis"
 
     def get_queryset(self):
-        return Rent.objects.filter(user=self.request.user).order_by("-rent_date")
+        return Rent.objects.filter(user=self.request.user).order_by("-rent_date").order_by("concluded")
 
 
 class AttendantRentListView(PermissionRequiredMixin, LoginRequiredMixin, ListView):
@@ -40,7 +47,7 @@ class AttendantRentListView(PermissionRequiredMixin, LoginRequiredMixin, ListVie
     context_object_name = "alugueis"
     permission_required = "aluguel"
     ordering = "rent_date"
-    queryset = Rent.objects.filter(return_date__isnull=True)
+    queryset = Rent.objects.filter(concluded=False)
 
 
 @login_required
@@ -48,7 +55,10 @@ def rent_car(request, car_plate):
     car = get_object_or_404(Car, pk=car_plate)
 
     if car.rented:
+        messages.error(
+            request, "O carro de placa {} já está alucado.".format(car.plate.upper()))
         return redirect(reverse_lazy("list_cars"))
+
     else:
         if request.method == 'POST':
             form = RentForm(request.POST)
@@ -58,7 +68,14 @@ def rent_car(request, car_plate):
                 form.instance.car.rented = True
                 form.instance.car.save()
                 form.save()
+                messages.success(
+                    request, "O carro de placa {} foi alugado com sucesso.".format(car.plate.upper()))
                 return redirect(reverse_lazy("list_rents"))
+            else:
+                form = RentForm()
+                messages.error(
+                    request, "Não é possível alugar um veículo em datas passadas.")
+                return render(request, 'rent/create_rent.html', {'form': form, 'carro': car})
         else:
             form = RentForm()
         return render(request, 'rent/create_rent.html', {'form': form, 'carro': car})
@@ -68,14 +85,11 @@ def rent_car(request, car_plate):
 @permission_required("aluguel")
 def rent_recive_car(request, rental_number):
     rent = get_object_or_404(Rent, rental_number=rental_number)
-
-    if request.method == 'POST':
-        form = AttendantRentForm(request.POST, instance=rent)
-        if form.is_valid():
-            form.instance.car.rented = False
-            form.instance.car.save()
-            form.save()
-            return redirect(reverse_lazy("attendant_list_rents"))
-    else:
-        form = AttendantRentForm(instance=rent)
-    return render(request, 'rent/recive_rent.html', {'form': form})
+    rent.car.rented = False
+    rent.car.save()
+    rent.concluded = True
+    rent.return_date = timezone.now().date()
+    rent.save()
+    messages.success(
+        request, "O carro de placa {} foi devolvido com sucesso.".format(rent.car.plate.upper()))
+    return redirect(reverse_lazy("attendant_list_rents"))

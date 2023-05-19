@@ -51,6 +51,7 @@ class Rent(TimeStampedModel):
         "Data de aluguel")
     return_date = models.DateField(
         "Data de devolução", null=True, blank=True)
+    concluded = models.BooleanField("Concluido", default=False)
     user = models.ForeignKey(
         User, on_delete=models.CASCADE, verbose_name="Cliente", related_name="user_rents")
 
