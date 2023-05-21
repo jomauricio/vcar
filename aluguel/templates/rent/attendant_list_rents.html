@@ -9,7 +9,7 @@
         </h2>
         <ul class="list-group list-group-flush">
             {% for aluguel in alugueis %}
-            <a href="{% url 'rent_recive_car' aluguel.rental_number %}" class="list-group-item list-group-item-action">
+            <a href="{% url 'detail_rent' aluguel.id %}" class="list-group-item list-group-item-action">
                 <div class="card">
                     <div class="row g-0">
                       <div class="col-md-4">

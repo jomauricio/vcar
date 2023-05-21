@@ -7,45 +7,55 @@
     <h2 class="pb-2 border-bottom mb-3">
       <i class="fa-solid fa-check-to-slot me-2"></i>Receber: {{ form.instance.car }}
     </h2>
-    <div class="card mb-3">
-      <div class="row g-0">
-        <div class="col-md-4">
-          {% thumbnail form.instance.car.image "x200" crop="center" as im %}
-          <img src="{{ im.url }}"
-               width="{{ im.width }}"
-               height="{{ im.height }}"
-               alt="carro"
-               class="card-img-top" />
-        {% empty %}
-          <img src="{% static 'img/carro.jpg' %}"
-               width="200"
-               height="200"
-               alt="carro"
-               class="card-img-top" />
-        {% endthumbnail %}
-      </div>
-      <div class="col-md-8">
-        <div class="card-body">
-          <h5 class="card-title mb-3"><span class="badge bg-secondary">Placa: {{ form.instance.car }}</span></h5>
-          <div class="row">
-            <div class="col">
-              <h2 class="card-text">Total a pagar:</h2>
-              <h2>
-                <span class="badge bg-success rounded-pill">R$ {{ form.instance.car.rent_amount }}</span>
-              </h2>
-            </div>
-            <div class="col">
-              <ul class="list-group list-group-flush">
-                <li class="list-group-item">Marca: {{ form.instance.car.brand }}</li>
-                <li class="list-group-item">Modelo: {{ form.instance.car.model }}</li>
-                <li class="list-group-item">Ano: {{ form.instance.car.year }}</li>
-              </ul>
+      <div class="card mb-3">
+          <div class="row g-0">
+            <div class="col-md-4">
+              {% thumbnail aluguel.car.image "x200" crop="center" as im %}
+              <img src="{{ im.url }}"
+                   width="{{ im.width }}"
+                   height="{{ im.height }}"
+                   alt="carro"
+                   class="card-img-top" />
+            {% empty %}
+              <img src="{% static 'img/carro.jpg' %}"
+                   width="200"
+                   height="200"
+                   alt="carro"
+                   class="card-img-top" />
+            {% endthumbnail %}
+          </div>
+          <div class="col-md-8">
+            <div class="card-body">
+              <div class="row">
+                <div class="col">
+                  <h5 class="card-title mb-3 text-center">Codigo: <span class="badge bg-secondary">{{ aluguel.rental_number }}</span></h5>
+                </div>
+                <div class="col">
+                  <h5 class="card-title mb-3 text-center">Data do aluguel: <span class="badge bg-secondary">{{ aluguel.rent_date }}</span></h5>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col">
+                  <ul class="list-group list-group-flush">
+                    <li class="list-group-item">Marca: {{ aluguel.car.brand }}</li>
+                    <li class="list-group-item">Modelo: {{ aluguel.car.model }}</li>
+                    <li class="list-group-item">Ano: {{ aluguel.car.year }}</li>
+                  </ul>
+                </div>
+                <div class="col">
+                  <div class="col text-center">
+                    <ul class="list-group list-group-flush">
+                      <li class="list-group-item">Cliente: {{ aluguel.user }}</li>
+                      <li class="list-group-item">Data de aluguel: {{ aluguel.rent_date }}</li>
+                      <li class="list-group-item">Se entregar hoje: <span class="badge bg-success rounded-pill">R$ {{ aluguel.total_rent }}</span></li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
-  </div>
-  <a href="#" class="btn btn-primary">Devolver!</a>
+  <a href="{% url 'rent_recive_car' aluguel.rental_number %}" class="btn btn-primary">Devolver!</a>
 </section>
 {% endblock content %}

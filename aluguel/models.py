@@ -71,9 +71,11 @@ class Rent(TimeStampedModel):
             return "Não foi possivel calcular"
 
     def total_days(self):
-        if self.return_date:
+        if self.concluded and self.return_date:
             total = self.return_date - self.rent_date
             return total.days + 1
+        elif self.rent_date > date.today():
+            return 0
         else:
             total = date.today() - self.rent_date
             return total.days + 1

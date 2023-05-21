@@ -6,8 +6,9 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
 from django.utils import timezone
 from django.views.generic import DetailView, ListView
+from sms import send_sms
 
-from .forms import AttendantRentForm, RentForm
+from .forms import RentForm
 from .models import Car, Rent
 
 # Create your views here.
@@ -21,7 +22,7 @@ class CarDetailView(DetailView):
 
 class RentDetailView(DetailView):
     model = Rent
-    template_name = "rent/attendant_list_rents.html"
+    template_name = "rent/recive_rent.html"
     context_object_name = "aluguel"
 
 
@@ -70,6 +71,10 @@ def rent_car(request, car_plate):
                 form.save()
                 messages.success(
                     request, "O carro de placa {} foi alugado com sucesso.".format(car.plate.upper()))
+                phone_number = "+5586981103337"  # request.user.profile
+                message = "O carro de placa {} foi alugado com sucesso em {}".format(car.plate.upper(),
+                                                                                     timezone.now().strftime("%d/%m%Y, %H:%M:%S"))
+                send_sms(message, None, [phone_number], fail_silently=False)
                 return redirect(reverse_lazy("list_rents"))
             else:
                 form = RentForm()
@@ -92,4 +97,8 @@ def rent_recive_car(request, rental_number):
     rent.save()
     messages.success(
         request, "O carro de placa {} foi devolvido com sucesso.".format(rent.car.plate.upper()))
+    phone_number = "+5586981103337"  # request.user.profile
+    message = "O carro de placa {} foi devolvido com sucesso em {}".format(rent.car.plate.upper(
+    ),                                                                      timezone.now().strftime("%d/%m%Y, %H:%M:%S"))
+    send_sms(message, None, [phone_number], fail_silently=False)
     return redirect(reverse_lazy("attendant_list_rents"))

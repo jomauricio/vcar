@@ -52,12 +52,12 @@ class Registration(CreateView):
 class SettingsView(TemplateView):
     template_name = "profile/settings.html"
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
+    # def get_context_data(self, **kwargs):
+    #     context = super().get_context_data(**kwargs)
 
-        phone_number = "+5586981103337"
-        message = "Você acessou suas configurações as {}.".format(
-            timezone.now())
+    #     phone_number = "+5586981103337"
+    #     message = "Você acessou suas configurações as {}.".format(
+    #         timezone.now().strftime("%d/%m%Y, %H:%M:%S"))
 
-        send_sms(message, None, [phone_number], fail_silently=False)
-        return context
+    #     send_sms(message, None, [phone_number], fail_silently=False)
+    #     return context
