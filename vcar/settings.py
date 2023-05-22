@@ -12,18 +12,25 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 
 from pathlib import Path
 
+import environ
+
+env = environ.Env()
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+env.read_env(str(BASE_DIR / ".env"))
 
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-*aj+p%)x65nxzb12(n-^u%h$vjgm%ubxjzpjea2laf2s5odj)('
-
+SECRET_KEY = env(
+    "DJANGO_SECRET_KEY",
+    default="django-insecure-*aj+p%)x65nxzb12(n-^u%h$vjgm%ubxjzpjea2laf2s5odj)("
+)
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = env.bool("DJANGO_DEBUG", True)
 
 # https://docs.djangoproject.com/en/dev/ref/settings/#allowed-hosts
 ALLOWED_HOSTS = ["localhost", "0.0.0.0", "127.0.0.1"]
@@ -108,13 +115,15 @@ WSGI_APPLICATION = 'vcar.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
+# DATABASES = {"default": env.db("DATABASE_URL")}
+# DATABASES["default"]["ATOMIC_REQUESTS"] = True
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
@@ -167,6 +176,11 @@ STATIC_URL = "static/"
 STATIC_ROOT = BASE_DIR / "staticfiles"
 # STATICFILES_DIRS = [BASE_DIR / "static"]
 
+STATICFILES_FINDERS = [
+    "django.contrib.staticfiles.finders.FileSystemFinder",
+    "django.contrib.staticfiles.finders.AppDirectoriesFinder",
+]
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
@@ -194,19 +208,26 @@ CACHES = {
 # https://docs.djangoproject.com/en/dev/ref/settings/#email-backend
 # EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 # EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_TIMEOUT = 5
 
-ANYMAIL = {
-    # (exact settings here depend on your ESP...)
-    "MAILJET_API_KEY": "7dfbcdaac00d23b5cfc149f96a796dde",
-    "MAILJET_SECRET_KEY": "ec739e69df5399dd0f70fa008bc8e442",
-}
 # or sendgrid.EmailBackend, or...
-EMAIL_BACKEND = "anymail.backends.mailjet.EmailBackend"
+EMAIL_BACKEND = env(
+    "DJANGO_EMAIL_BACKEND",
+    default="django.core.mail.backends.console.EmailBackend",
+)
 # if you don't already have this in settings
+DEFAULT_FROM_EMAIL = env(
+    "DJANGO_DEFAULT_FROM_EMAIL",
+    default="My Awesome Project <noreply@example.com>",
+)
 DEFAULT_FROM_EMAIL = "noreplay@vcar.site"
 # ditto (default from-email for Django errors)
 SERVER_EMAIL = "noreplayr@vcar.site"
 
+ANYMAIL = {
+    "MAILJET_API_KEY": env("MAILJET_API_KEY"),
+    "MAILJET_SECRET_KEY": env("MAILJET_SECRET_KEY"),
+}
 
 # WhiteNoise
 # ------------------------------------------------------------------------------
@@ -221,11 +242,9 @@ STORAGES = {
 }
 
 
-# SMS api
+# DJANGO SMS
 
-# TELESIGN_COSTUMER_ID = '57ABDDA1-841F-4A69-990B-07AD33926CA5'
-# TELESIGN_KEY = 'xJe3RWgiGnPmJrm+Zzcu/IzZMzsw86IoHMEsEIDpuWVPfoaPE3o7HYDxLRsQZkEHuo4geuI8r9OAhsKAUL5r8g=='
-SMS_BACKEND = 'sms.backends.twilio.SmsBackend'
-TWILIO_ACCOUNT_SID = 'ACd1425928f0c6952b50ce56190358b8ab'
-TWILIO_AUTH_TOKEN = '275f6c7264f8512acce7030c491bb05f'
-DEFAULT_FROM_SMS = '+12543213987'
+SMS_BACKEND = env("DJANGO_SMS_BACKEND")
+TWILIO_ACCOUNT_SID = env("DJANGO_TWILIO_ACCOUNT_SID")
+TWILIO_AUTH_TOKEN = env("DJANGO_TWILIO_AUTH_TOKEN")
+DEFAULT_FROM_SMS = env("DJANGO_DEFAULT_FROM_SMS")
