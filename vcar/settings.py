@@ -58,10 +58,10 @@ THIRD_PARTY_APPS = [
     # "allauth",
     # "allauth.account",
     # "allauth.socialaccount",
-    # "rest_framework",
-    # "rest_framework.authtoken",
-    # "corsheaders",
-    # "drf_spectacular",
+    "rest_framework",
+    "rest_framework.authtoken",
+    "corsheaders",
+    "drf_spectacular",
     "sorl.thumbnail",
     "anymail",
 ]
@@ -78,6 +78,7 @@ INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    "corsheaders.middleware.CorsMiddleware",
     'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -248,3 +249,27 @@ SMS_BACKEND = env("DJANGO_SMS_BACKEND")
 TWILIO_ACCOUNT_SID = env("DJANGO_TWILIO_ACCOUNT_SID")
 TWILIO_AUTH_TOKEN = env("DJANGO_TWILIO_AUTH_TOKEN")
 DEFAULT_FROM_SMS = env("DJANGO_DEFAULT_FROM_SMS")
+
+# django-rest-framework
+# -------------------------------------------------------------------------------
+# django-rest-framework - https://www.django-rest-framework.org/api-guide/settings/
+REST_FRAMEWORK = {
+    "DEFAULT_AUTHENTICATION_CLASSES": (
+        "rest_framework.authentication.SessionAuthentication",
+        "rest_framework.authentication.TokenAuthentication",
+    ),
+    "DEFAULT_PERMISSION_CLASSES": ("rest_framework.permissions.IsAuthenticated",),
+    "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
+}
+
+# django-cors-headers - https://github.com/adamchainz/django-cors-headers#setup
+CORS_URLS_REGEX = r"^/api/.*$"
+
+# By Default swagger ui is available only to admin user(s). You can change permission classes to change that
+# See more configuration options at https://drf-spectacular.readthedocs.io/en/latest/settings.html#settings
+SPECTACULAR_SETTINGS = {
+    "TITLE": "VCAR - Aluguel de veículos",
+    "DESCRIPTION": "Documentação dos endpoints da API do VCAR",
+    "VERSION": "1.0.0",
+    "SERVE_PERMISSIONS": ["rest_framework.permissions.IsAdminUser"],
+}
